@@ -52,6 +52,18 @@ public class Ui extends JFrame {
             operator = "";
             display.setText("");
             break;
+            case "+":
+            case "-":
+            case "*":
+            case "/":
+            case "^":
+            case "%":
+            if (!currentInput.isEmpty()) {
+                firstNumber = Double.parseDouble(currentInput);
+                operator = text;
+                currentInput = "";
+            }
+            break;
             case "=":
             if (!currentInput.isEmpty() && !operator.isEmpty()) {
                 double secondNumber = Double.parseDouble(currentInput);
@@ -70,18 +82,40 @@ public class Ui extends JFrame {
                         case "/":
                             result = logic.divide(firstNumber, secondNumber);
                             break;
-                        case "^":       
+                        case "^":
                             result = logic.power(firstNumber, secondNumber);
-                            break;
-                        case "sqrt":
-                            result = logic.squareRoot(firstNumber);
                             break;
                         case "%":
                             result = logic.percentage(firstNumber, secondNumber);
                             break;
-                        
-                
+                    }
+                    display.setText(""+result);
+                    currentInput = "" + result;
+                    operator = "";
+                } catch (IllegalArgumentException e) {
+                    display.setText("Error: " + e.getMessage());
+                    currentInput = "";
+                    operator = "";
+                }
             }
+            break;
+            case "sqrt":
+            if (!currentInput.isEmpty()) {
+                try {
+                    double val = Double.parseDouble(currentInput);
+                    double result = logic.squareRoot(val);
+                    display.setText("" + result);
+                    currentInput = "" + result;
+                } catch (IllegalArgumentException e) {
+                    display.setText("Error: " + e.getMessage());
+                    currentInput = "";
+                }
+            }
+            break;
+            default:
+            currentInput += text;
+            display.setText(currentInput);
+            break;
         }
     }
 
